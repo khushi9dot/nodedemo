@@ -421,9 +421,23 @@ const getWatchHistory=asyncHandler(async (req,res)=>{
     .json(new apiResponse(200,user[0].watchHistory,"history fetched successfully..."))
 })
 
+const deleteUser=asyncHandler(async (req,res)=>{
+    const {username}=req.params
+
+    const user=await User.findOneAndDelete({username})
+
+    if(!user){
+        throw new apiError(404,"user not found")
+    }
+
+    return res.status(200)
+    .json(new apiResponse(200,{},"deleted successfully"))
+
+})
+
 export {registerUser,
     loginUser,
-    logoutUser,
+    logoutUser, 
     refreshAccessToken,
     changePassword,
     getCurrentUser,
@@ -431,6 +445,7 @@ export {registerUser,
     updateUserAvatar,
     updateUserCoverImage,
     getUserChannelProfile,
-    getWatchHistory
+    getWatchHistory,
+    deleteUser
 }
 
